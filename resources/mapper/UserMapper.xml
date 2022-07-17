@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--结果集的property名称必须和数据库列名对应-->
+<!--namespace对应相应的接口类-->
+<mapper namespace="Spring_Test.UserMapper">
+    <resultMap id="BaseResultMap" type="Spring_Test.entity.user">
+        <result column="user_name" jdbcType="VARCHAR" property="user" />
+        <result column="password" jdbcType="VARCHAR" property="passwd" />
+    </resultMap>
+
+
+<!--    <select id="getUserByName" resultType="Spring_Test.Model.user" parameterType="String">-->
+<!--        select * from user where user_name = #{username}-->
+<!--    </select>-->
+</mapper>
