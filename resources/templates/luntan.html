@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+		#yc{
+			width: 500px;
+    		height: 100px;
+			padding:40px;
+			margin:0px auto;
+			background-color:#ccc;
+			background-color: rgba(254,219,207,0.5);
+			border-radius: 15px 15px 15px 15px;
+
+
+			}
+		input{
+			margin-left: 50px;
+		}
+		#st{
+			margin-left: 82px;
+    		margin-bottom: 46px;
+		}
+		 #zhuce{
+            margin-left:82px;
+        }
+        #tiezi{
+            margin-bottom:10px;
+        	height: 50px;
+        	padding: 50px;
+        	background-color:#ccc;
+			background-color: rgba(254,219,207,0.5);
+			border-radius: 15px 15px 15px 15px;
+        }
+        #submit{
+        	width: 50px;
+        }
+        body{
+        	background: url(/static/背景图.jpg);
+        	background-repeat:no-repeat;
+        	background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+        .page{
+            margin-left: 400px;
+            border-radius: 7px;
+            width: 71px;
+        }
+        #current_user{
+            width:180px;
+            height:100px;
+            float:right;
+        }
+	</style>
+</head>
+<body>
+<div id='sent'>
+    <div id="current_user">
+        <a th:text="'当前登录用户为：'+${current_user}"></a>
+    </div>
+    <div id='yc'>
+        <textarea id="publish" rows="6" cols="50"onpropertychange="if(this.scrollHeight>80)this.style.posHeight=this.scrollHeight+5">请输入要发布的内容</textarea>
+        <br />
+        <input type="submit" id="submit" value="发布"/>
+    </div>
+</div>
+<HR style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="80%"color=#987cb9 SIZE=3>
+
+<div id="tiezi" th:each="tiezi : ${tiezi_list}">
+    <a>用户名:</a><a th:text="*{tiezi.user}"></a><br /><br />
+    <div id="content" th:text="*{tiezi.content}">
+    </div>
+    <HR>
+</div>
+
+<input type="button" id="top_page" class="page" value="上一页" onclick="top_page();">
+<input type="button" id="next_page" class="page" value="下一页" onclick="next_page();">
+
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="/templates/luntan.js"></script>
+</body>
+</html>

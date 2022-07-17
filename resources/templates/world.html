@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <h1 th:text="${msg}">hello world!</h1>-->
+</head>
+<body>
+    <form th:Object="${msg}">
+        <label th:text="*{user_name}">开始的倾心交谈</label>
+        <a href="http://localhost:8001/hello">hello</a>
+    </form>
+
+</body>
+</html>
