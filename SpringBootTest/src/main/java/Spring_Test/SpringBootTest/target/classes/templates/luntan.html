@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<title>论坛</title>
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+		#yc{
+			width: 500px;
+    		height: 100px;
+			padding:40px;
+			margin:0px auto;
+			background-color:#ccc;
+			background-color: rgba(254,219,207,0.5);
+			border-radius: 15px 15px 15px 15px;
+
+
+			}
+		input{
+			margin-left: 50px;
+		}
+		#st{
+			margin-left: 82px;
+    		margin-bottom: 46px;
+		}
+		 #zhuce{
+            margin-left:82px;
+        }
+        #tiezi{
+            margin-bottom:10px;
+        	height: auto;
+        	padding: 50px;
+        	background-color:#ccc;
+			background-color: rgba(254,219,207,0.5);
+			border-radius: 15px 15px 15px 15px;
+			resize: vertical;
+        }
+        #submit{
+        	width: 50px;
+        }
+        body{
+        	background: url(/static/背景图.jpg);
+        	background-repeat:no-repeat;
+        	background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+        .page{
+            margin-left: 400px;
+            border-radius: 7px;
+            width: 71px;
+        }
+        #current_user{
+            width:180px;
+            height:100px;
+            float:right;
+        }
+        #child_remark {
+            margin-left:10px;
+            margin-top: 20px;
+        }
+        /*回复按钮样式*/
+        .reply{
+            float:right;
+            /*text-decoration:none*/
+        }
+        .remark{
+            line-height: 40px;
+            margin-left: 55px;
+        }
+        /*.PublishTime {*/
+        /*    float: right;*/
+        /*    margin-left: 200px;*/
+        /*}*/
+
+	</style>
+</head>
+<body>
+<div id='sent'>
+    <div id="current_user">
+        <a th:text="'当前登录用户为：'+${current_user}"></a>
+    </div>
+    <div id='yc'>
+        <textarea id="publish" rows="6" cols="50"onpropertychange="if(this.scrollHeight>80)this.style.posHeight=this.scrollHeight+5">请输入要发布的内容</textarea>
+        <br />
+        <input type="submit" id="submit" value="发布"/>
+    </div>
+</div>
+<HR style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="80%"color=#987cb9 SIZE=3>
+
+<div id="tiezi" th:each="tiezi : ${tiezi_list}" >
+    <a>用户名:</a><a th:text="*{tiezi.user}"></a>
+    <a th:text="'发布时间:'+*{tiezi.PublishTime}"} style="margin-left: 50px;float: right"></a>
+    <br /><br />
+    <!-- 帖子内容-->
+    <div id="content" th:text="*{tiezi.content}"></div>
+    <a class="reply"  th:onclick="'showAndhide('+*{tiezi.ID}+');'">评论</a>
+    <br /><br />
+    <HR style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="80%"color=#987cb9 SIZE=3>
+    <div th:each="remark : ${remark_list} " >
+        <div class="remark">
+            <!--根评论输出        -->
+            <!--th:if="*{tiezi.ID eq remark.ParentID}" 设置条件:当帖子ID和评论对应时进行输出        -->
+            <a  th:if="*{tiezi.ID eq remark.ParentID}" th:text="'用户'+*{remark.User}+'的评论：'+*{remark.Text}"></a>
+            <a th:if="*{tiezi.ID eq remark.ParentID}" th:text="*{'发布时间:'+remark.PublishTime}" class="PublishTime"></a>
+            <a class="reply" th:onclick="'showAndhide('+*{remark.ID}+');'" th:if="*{tiezi.ID eq remark.ParentID}" href="#">回复</a>
+        </div>
+
+        <!--初次调用子评论递归块        -->
+        <tbody th:if="*{tiezi.ID eq remark.ParentID}" th:include="this::row(*{remark.child_List},55)" />
+        <!--递归调用子评论递归块        -->
+        <th:block th:fragment="row(child_List,marginleft)">
+            <div th:each="child : ${child_List}">
+                <div class="child_remark">
+                    <a id="child_remark" class="remark" th:text="'用户'+*{child.User}+'的评论：'+*{child.Text}" th:style="'margin-left:'+${marginleft+50}+'px'"></a>
+                    <a th:text="*{'发布时间:'+child.PublishTime}" class="PublishTime"></a>
+                    <!--   通过点击调用showAndhide显示输入框并且将ID传到后台js中     -->
+                    <a class="reply"  th:onclick="'showAndhide('+*{child.ID}+');'">回复</a><br>
+                </div>
+                <!--  递归调用行      -->
+                <th:block th:unless="*{#lists.isEmpty(child.Child_List)}" th:include="this::row(${child.Child_List},${marginleft+50})"/>
+            </div>
+        </th:block>
+
+
+    </div>
+    <HR>
+</div>
+
+<input type="button" id="top_page" class="page" value="上一页" onclick="top_page();">
+<input type="button" id="next_page" class="page" value="下一页" onclick="next_page();">
+
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="/templates/luntan.js"></script>
+</body>
+</html>

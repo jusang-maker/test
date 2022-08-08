@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+		#yc{
+			width: 500px;
+    		height: 250px;
+			padding:40px;
+			margin:250px auto;
+			background-color:#ccc;
+			background-color: rgba(254,219,207,0.5);
+			border-radius: 15px 15px 15px 15px;
+
+
+			}
+		input{
+			margin-bottom: 28px;
+    		width: 300px;
+    		height: 37px;
+    		margin-left: 82px;
+		}
+		#st{
+			margin-left: 82px;
+    		margin-bottom: 46px;
+		}
+		 #zhuce{
+            margin-left:82px;
+        }
+        body{
+        	background: url(/static/背景图.jpg);
+        	background-repeat:no-repeat;
+        	background-size: 100% 100%;
+            background-attachment: fixed;
+        }
+	</style>
+</head>
+<body onkeydown="if(event.keyCode===13) document.all.st.click()">
+<div id='sent'>
+    <div id='yc'>
+            <input id="dm"  type="text"  name="dm" placeholder="请输入账号"/><br>
+
+            <input id="mm"  type="text"  name="mm" placeholder="请输入密码"/><br>
+
+            <input id="st"  type="submit" value="登录"/><br>
+            <a id="zhuce" href="http://localhost:8001/zhuce">还未注册？请点击此处</a>
+    </div>
+</div>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+			var dm = document.getElementById('dm');
+			var mm = document.getElementById('mm');
+			st.onclick = function () {
+				if (dm.value != '' && dm.value.length <= 25) {
+				$.ajax({
+    				type: 'POST',
+    				dataType: 'json',
+    				contentType: 'application/json;charset=UTF-8',
+    				data: JSON.stringify({
+    				    "user_name": dm.value,  // 支付项目编号
+    				    "passwd": mm.value,    // 支付方式
+    				}),
+    				url: '/user/login',
+    				success: function (data) {
+    				    if(data.msg=='true'){
+    				        window.location.href='http://localhost:8001/luntan?pageNum=1'
+    				    }
+    				    else{
+    				       alert('密码错误')
+    				    }
+    				},
+    				error: function(data) {
+						alert('发送失败');
+					}
+				})
+				}
+				else {
+					alert('输入不能超过25个字符!');
+				}
+			};
+        </script>
+</body>
+</html>
